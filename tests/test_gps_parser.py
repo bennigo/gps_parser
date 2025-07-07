@@ -18,15 +18,17 @@ def main():
     print(config.getStationInfo("THEY"))
 
     print("from: plotVelo")
-    coordfile = config.getPostprocessConfig("coordfile")
+    coordfile = config.getPostprocessConfig("coordFile")
     print(coordfile)
     print("from: plateDict")
-    print(config.getPostprocessConfig("pfile"))
+    print(config.getPostprocessConfig("plateFile"))
+    print(config.getPostprocessConfig("coordFile"))
+    print(config.getPostprocessConfig("detrendFile"))
 
-    sta_name = config.getStationInfo("THEY")  # ["station"]["name"]
-    print(sta_name["station"]["station_name"])
-    Dir = config.getPostprocessConfig("totPath")
-    print(Dir)
+    # sta_name = config.getStationInfo("THEY")  # ["station"]["name"]
+    # print(sta_name)
+    # Dir = config.getPostprocessConfig("totPath")
+    # print(Dir)
 
 
 if __name__ == "__main__":
