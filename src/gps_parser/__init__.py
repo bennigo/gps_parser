@@ -58,13 +58,20 @@ class ConfigParser:
 
         return self.dest_postprocess_config_path
 
-    def getStationInfo(self, station_id):
+    def getStationInfo(self, station_id: str = ""):
         """
         This function gets station information from the 'stations.cfg' file.
         """
         # Read the 'station' section from the 'stations.cfg' file
-        station_info = dict(self.config.items(station_id))
-        if self.config.has_section(station_id):
+
+        if station_id == "":
+            return [
+                section
+                for section in self.config.sections()
+                if section not in ["Configs"]
+            ]
+        elif self.config.has_section(station_id):
+            station_info = dict(self.config.items(station_id))
             return {"station": station_info}
         else:
             raise Exception(f"Station '{station_id}' not found in 'stations.cfg' file.")
