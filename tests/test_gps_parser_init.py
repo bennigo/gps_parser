@@ -74,7 +74,7 @@ def test_getStationInfo_not_found(monkeypatch, temp_config_dir):
 def test_getPostprocessConfig(monkeypatch, temp_config_dir):
     monkeypatch.setenv("GPS_CONFIG_PATH", str(temp_config_dir))
     parser = ConfigParser()
-    value = parser.getPostprocessConfig("option1")
+    value = parser.getPostProcessConfig("option1")
     assert value == "value1"
 
 
@@ -82,5 +82,5 @@ def test_getPostprocessConfig_not_found(monkeypatch, temp_config_dir):
     monkeypatch.setenv("GPS_CONFIG_PATH", str(temp_config_dir))
     parser = ConfigParser()
     with pytest.raises(Exception) as excinfo:
-        parser.getPostprocessConfig("doesnotexist")
+        parser.getPostProcessConfig("doesnotexist")
     assert "not found" in str(excinfo.value)

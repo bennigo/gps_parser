@@ -6,7 +6,10 @@ import os
 class ConfigParser:
     def __init__(self):
         # Setting up the working directories
-        self.config = configparser.ConfigParser()
+        # self.config = configparser.ConfigParser()
+        self.config = configparser.ConfigParser(
+            interpolation=configparser.ExtendedInterpolation()
+        )
 
         self.config_path = os.environ.get("GPS_CONFIG_PATH")
         if self.config_path is None:
@@ -40,10 +43,7 @@ class ConfigParser:
         This function gets a configuration option from the 'stations.cfg' file.
         """
         # Getting the configuration option
-        value = self.config.get(section, option)
-        # Replacing /mnt/ with the MOUNT_PATH
-        # value = value.replace("/mnt/", self.mount_path)
-        return value
+        return self.config.get(section, option)
 
     def get_stations_config_path(self):
         """
@@ -76,14 +76,22 @@ class ConfigParser:
         else:
             raise Exception(f"Station '{station_id}' not found in 'stations.cfg' file.")
 
-    def getPostprocessConfig(self, option):
-        """
-        This function gets a configuration option from the 'postprocess.cfg' file.
-        """
-        # Read the 'Configs' section from the 'postprocess.cfg' file
-        if self.config.has_section("Configs"):
-            if self.config.has_option("Configs", option):
-                return self.config.get("Configs", option)
+    def getPostProcessDir(self, option):
+        if self.config.has_section("PATHS"):
+            if self.config.has_option("PATHS", option):
+                return os.path.expanduser(self.config.get("PATHS", option))
         raise Exception(
             f"Option '{option}' not found in 'Configs' section of the postprocess configuration file."
+        )
+
+    def getPostProcessConfig(self, option):
+        """
+        This function gets file paths from the 'postprocess.cfg' file.
+        """
+        # Read the 'Configs' section from the 'postprocess.cfg' file
+        if self.config.has_section("FILES"):
+            if self.config.has_option("FILES", option):
+                return os.path.expanduser(self.config.get("FILES", option))
+        raise Exception(
+            f"Option '{option}' not found in 'FILES' section of the postprocess configuration file."
         )
